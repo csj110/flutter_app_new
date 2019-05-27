@@ -251,24 +251,50 @@ class CustomShapeClipper extends CustomClipper<Path> {
   }
 }
 
-var homeScreenBottom = Column(
-  children: <Widget>[
-    Row(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        SizedBox(
-          width: 10,
+var homeScreenBottom = Container(
+  padding: EdgeInsets.all(10),
+  child: Column(
+    children: <Widget>[
+      Row(
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          Text(
+            'Currently watched items',
+            style: TextStyle(color: Colors.black, fontSize: 17),
+          ),
+          Spacer(),
+          Text(
+            'VIEW ALL(12)',
+            style: TextStyle(color: appTheme.primaryColor, fontSize: 13),
+          )
+        ],
+      ),
+      Container(
+        height: 210,
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          children: cityCard,
         ),
-        Text(
-          'Currently watched items',
-          style: TextStyle(color: Colors.black, fontSize: 20),
-        ),
-        Text(
-          'VIEW ALL(12)',
-          style: TextStyle(color: appTheme.primaryColor, fontSize: 10),
-        )
-      ],
-    )
-  ],
+      )
+    ],
+  ),
 );
+
+List<CityCard> cityCard=[
+  CityCard('assets/images/1.jpeg', 'Las Vegas', 'Feb 2019', '45', '4299', '2258'),
+  CityCard('assets/images/2.jpeg', 'Athens', 'Apr 2019', '50', '9999', '4159'),
+  CityCard('assets/images/3.jpeg', 'Sydney', 'Dec 2019', '40', '5999', '2399'),
+];
+
+class CityCard extends StatelessWidget {
+  final String imagePath,cityName,mothYear,discount,oldPrice,newPrice;
+  CityCard(this.imagePath,this.cityName,this.mothYear,this.discount,this.oldPrice,this.newPrice);
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        Container(child: Image.asset(imagePath),)
+      ],
+    );
+  }
+}
