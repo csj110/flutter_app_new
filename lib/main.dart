@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import 'customTapbar.dart';
+import 'flight_lists.dart';
 
 void main() => runApp(MyApp());
 
@@ -48,7 +49,6 @@ const iconSize = 30.0;
 class _HomeScreenTopContainerState extends State<HomeScreenTopContainer> {
   var selectLocationIndex = 0;
   var isFlightSelected = true;
-  var isHotelSelected = false;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -142,10 +142,19 @@ class _HomeScreenTopContainerState extends State<HomeScreenTopContainer> {
                           border: InputBorder.none,
                           suffixIcon: Padding(
                             padding: EdgeInsets.all(0),
-                            child: Icon(
-                              Icons.search,
-                              color: Colors.black,
-                              size: iconSize,
+                            child: InkWell(
+                              child: Icon(
+                                Icons.search,
+                                color: Colors.black,
+                                size: iconSize,
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            FlightListScreen()));
+                              },
                             ),
                           )),
                     ),
@@ -163,7 +172,7 @@ class _HomeScreenTopContainerState extends State<HomeScreenTopContainer> {
                           Icons.flight_takeoff, 'Flights', isFlightSelected),
                       onTap: () {
                         setState(() {
-                          isFlightSelected = !isFlightSelected;
+                          isFlightSelected = false;
                         });
                       },
                     ),
@@ -171,10 +180,11 @@ class _HomeScreenTopContainerState extends State<HomeScreenTopContainer> {
                       width: 20,
                     ),
                     InkWell(
-                      child: ChoiceChip(Icons.hotel, 'Hotels', isHotelSelected),
+                      child:
+                          ChoiceChip(Icons.hotel, 'Hotels', !isFlightSelected),
                       onTap: () {
                         setState(() {
-                          isHotelSelected = !isHotelSelected;
+                          isFlightSelected = true;
                         });
                       },
                     ),
