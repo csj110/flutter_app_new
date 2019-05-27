@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter/rendering.dart';
+import 'package:flutter/rendering.dart';
+
+import 'customTapbar.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,9 +21,11 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-      children: <Widget>[HomeScreenTopContainer(), homeScreenBottom],
-    ));
+      body: Column(
+        children: <Widget>[HomeScreenTopContainer(), homeScreenBottom],
+      ),
+      bottomNavigationBar: CustomTapBar(),
+    );
   }
 }
 
@@ -258,9 +262,12 @@ var homeScreenBottom = Container(
       Row(
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
-          Text(
-            'Currently watched items',
-            style: TextStyle(color: Colors.black, fontSize: 17),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            child: Text(
+              'Currently watched items',
+              style: TextStyle(color: Colors.black, fontSize: 17),
+            ),
           ),
           Spacer(),
           Text(
@@ -270,7 +277,7 @@ var homeScreenBottom = Container(
         ],
       ),
       Container(
-        height: 210,
+        height: 230,
         child: ListView(
           scrollDirection: Axis.horizontal,
           children: cityCard,
@@ -280,21 +287,112 @@ var homeScreenBottom = Container(
   ),
 );
 
-List<CityCard> cityCard=[
-  CityCard('assets/images/1.jpeg', 'Las Vegas', 'Feb 2019', '45', '4299', '2258'),
-  CityCard('assets/images/2.jpeg', 'Athens', 'Apr 2019', '50', '9999', '4159'),
-  CityCard('assets/images/3.jpeg', 'Sydney', 'Dec 2019', '40', '5999', '2399'),
+List<CityCard> cityCard = [
+  CityCard('assets/images/1.jpeg', 'Las Vegas', 'Feb 2019', '45', 4299, 2258),
+  CityCard('assets/images/2.jpeg', 'Athens', 'Apr 2019', '50', 9999, 4159),
+  CityCard('assets/images/3.jpeg', 'Sydney', 'Dec 2019', '40', 5999, 2399),
 ];
 
 class CityCard extends StatelessWidget {
-  final String imagePath,cityName,mothYear,discount,oldPrice,newPrice;
-  CityCard(this.imagePath,this.cityName,this.mothYear,this.discount,this.oldPrice,this.newPrice);
+  final String imagePath, cityName, mothYear, discount;
+  final int oldPrice, newPrice;
+  CityCard(this.imagePath, this.cityName, this.mothYear, this.discount,
+      this.oldPrice, this.newPrice);
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Container(child: Image.asset(imagePath),)
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+      child: Column(
+        children: <Widget>[
+          ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  height: 210,
+                  width: 150,
+                  child: Image.asset(
+                    imagePath,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Positioned(
+                  left: 0,
+                  bottom: 0,
+                  width: 160,
+                  height: 60,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                            colors: [
+                          Colors.black,
+                          Colors.black.withOpacity(0.1)
+                        ])),
+                  ),
+                ),
+                Positioned(
+                  left: 10,
+                  bottom: 10,
+                  right: 10,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            cityName,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          Text(
+                            mothYear,
+                            style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                color: Colors.white),
+                          )
+                        ],
+                      ),
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 2.5),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.rectangle,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        child: Text(
+                          "$discount%",
+                          style: TextStyle(fontSize: 14, color: Colors.black),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+          Row(
+            children: <Widget>[
+              Text("\$$newPrice",
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold)),
+              SizedBox(
+                width: 20,
+              ),
+              Text("(\$$oldPrice)",
+                  style: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.lineThrough))
+            ],
+          )
+        ],
+      ),
     );
   }
 }
