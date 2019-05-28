@@ -45,7 +45,7 @@ const TextStyle dropDownLabelStyle =
 const TextStyle dropDownMenuItemStyle =
     TextStyle(color: Colors.black, fontSize: 20);
 const iconSize = 30.0;
-
+final _searchFieldController=TextEditingController(text: locations[1]);
 class _HomeScreenTopContainerState extends State<HomeScreenTopContainer> {
   var selectLocationIndex = 0;
   var isFlightSelected = true;
@@ -133,7 +133,7 @@ class _HomeScreenTopContainerState extends State<HomeScreenTopContainer> {
                     elevation: 5,
                     borderRadius: BorderRadius.all(Radius.circular(25)),
                     child: TextField(
-                      controller: TextEditingController(text: locations[1]),
+                      controller: _searchFieldController,
                       style: dropDownMenuItemStyle,
                       cursorColor: appTheme.primaryColor,
                       decoration: InputDecoration(
@@ -153,7 +153,7 @@ class _HomeScreenTopContainerState extends State<HomeScreenTopContainer> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            FlightListScreen()));
+                                            InheritedFlightListScreen(fromLocation:locations[selectLocationIndex],toLocation: _searchFieldController.text,child: FlightListScreen(),)));
                               },
                             ),
                           )),
